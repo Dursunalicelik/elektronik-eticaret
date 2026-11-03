@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> YENİ NESİL TEKNOLOJİ</span>
+      <h1>Gelecek,<br><em>bir tık</em> uzağında.</h1>
+      <p>Günlük hayatını kolaylaştıran teknoloji ürünlerini keşfet. İhtiyacın olan güç, ilham ve konfor burada.</p>
+      <div class="hero-actions"><a class="button" href="{{ url_for('products') }}">Ürünleri keşfet <span>↗</span></a><a class="text-link" href="#categories">Kategorilere göz at</a></div>
+      <div class="hero-meta"><div><strong>8+</strong><span>Özenle seçilmiş ürün</span></div><div><strong>6</strong><span>Ürün kategorisi</span></div><div><strong>7/24</strong><span>Online mağaza</span></div></div>
+    </div>
+    <div class="hero-art">
+      <div class="art-glow"></div><div class="art-card art-card-back"><span>INNOVATION</span><b>01 / 06</b></div>
+      <div class="device device-phone"><div class="phone-screen"><div class="phone-camera"></div><div class="phone-orb"></div><span>NOVA<br>PHONE</span></div></div>
+      <div class="device device-headphone"><div class="headband"></div><div class="ear ear-left"></div><div class="ear ear-right"></div></div>
+      <div class="floating-tag"><span class="tag-icon">✦</span><div><b>Teknoloji seçkisi</b><small>Senin için bir arada</small></div></div>
+      <div class="art-caption">DESIGNED FOR<br>YOUR EVERYDAY</div>
+    </div>
+  </div>
+</section>
+<section class="trust-strip"><div class="container trust-grid"><div>✧ <span>Özenle seçilmiş ürünler</span></div><div>↗ <span>Kolay sipariş deneyimi</span></div><div>◈ <span>Güvenli hesap yönetimi</span></div><div>◎ <span>Destek odaklı hizmet</span></div></div></section>
+<section class="section container" id="categories">
+  <div class="section-heading"><div><span class="eyebrow">ALIŞVERİŞE BAŞLA</span><h2>İhtiyacın olan <em>kategori.</em></h2></div><a class="text-link" href="{{ url_for('products') }}">Tüm ürünler <span>↗</span></a></div>
+  <div class="category-grid">
+    {% for c in categories %}
+    <a class="category-card" href="{{ url_for('products', category=c['category']) }}"><span class="category-icon">{% if c['category']=='Bilgisayar' %}💻{% elif c['category']=='Telefon' %}📱{% elif c['category']=='Ses' %}🎧{% elif c['category']=='Tablet' %}📟{% elif c['category']=='Akıllı Saat' %}⌚{% else %}✦{% endif %}</span><b>{{ c['category'] }}</b><span class="category-arrow">↗</span></a>
+    {% endfor %}
+  </div>
+</section>
+<section class="section products-section"><div class="container">
+  <div class="section-heading"><div><span class="eyebrow">EDITÖRÜN SEÇİMİ</span><h2>Öne çıkan <em>ürünler.</em></h2></div><a class="text-link" href="{{ url_for('products') }}">Mağazaya git <span>↗</span></a></div>
+  <div class="product-grid">
+    {% for p in products %}<article class="product-card">
+      <a class="product-visual visual-{{ loop.index % 4 }}" href="{{ url_for('product_detail', product_id=p['id']) }}"><span class="product-badge">NOVA SEÇİMİ</span><span class="product-emoji">{{ p['icon'] }}</span><span class="visual-label">{{ p['category']|upper }}</span></a>
+      <div class="product-info"><span class="product-category">{{ p['category'] }}</span><a class="product-name" href="{{ url_for('product_detail', product_id=p['id']) }}">{{ p['name'] }}</a><div class="product-bottom"><strong>{{ "%.2f"|format(p['price']) }} ₺</strong><form method="post" action="{{ url_for('add_to_cart', product_id=p['id']) }}"><button class="add-button" aria-label="Sepete ekle">+</button></form></div></div>
+    </article>{% endfor %}
+  </div>
+</div></section>
+<section class="container promo"><div><span class="eyebrow">NOVA STORE DENEYİMİ</span><h2>Teknoloji hayatına<br><em>uyum sağlasın.</em></h2><p>Aradığın ürünü kolayca bul, sepetine ekle ve siparişini birkaç adımda oluştur.</p><a class="button button-light" href="{{ url_for('products') }}">Alışverişe başla ↗</a></div><div class="promo-orbit">N<span>✦</span></div></section>
+{% endblock %}

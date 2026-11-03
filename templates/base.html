@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NovaStore | Teknoloji burada başlar{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">N</span> nova<span>store</span></a>
+    <nav class="main-nav">
+      <a href="{{ url_for('index') }}">Ana Sayfa</a>
+      <a href="{{ url_for('products') }}">Ürünler</a>
+      {% if current_user and current_user['is_admin'] %}<a href="{{ url_for('admin') }}">Yönetim</a>{% endif %}
+      {% if current_user %}<a href="{{ url_for('orders') }}">Siparişlerim</a>{% endif %}
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-link" href="{{ url_for('cart') }}">Sepet <span class="cart-count">{{ cart_count }}</span></a>
+      {% if current_user %}
+        <span class="welcome">Merhaba, {{ current_user['name'].split(' ')[0] }}</span>
+        <a class="button button-small button-outline" href="{{ url_for('logout') }}">Çıkış</a>
+      {% else %}
+        <a class="nav-link" href="{{ url_for('login') }}">Giriş</a>
+        <a class="button button-small" href="{{ url_for('register') }}">Üye Ol</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+<main>
+  <div class="container flash-wrap">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+  </div>
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="container footer-inner">
+    <a class="brand brand-light" href="{{ url_for('index') }}"><span class="brand-mark">N</span> nova<span>store</span></a>
+    <p>Teknolojiye daha yakından bak.</p>
+    <small>© 2026 NovaStore. Eğitim amaçlı demo mağazadır.</small>
+  </div>
+</footer>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
